@@ -2,7 +2,6 @@ const db = require("../config/database");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
-
 //logearse
 exports.login = (req, res) => {
   const { email, password } = req.body;
@@ -16,8 +15,12 @@ exports.login = (req, res) => {
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) return res.status(401).json({ error: "Contraseña incorrecta" });
 
-    const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, { expiresIn: "10m" });
-    res.status(200).json({ message: "Login exitoso", token });
+    const token = jwt.sign({ id: user.id, name: user.nombre }, process.env.JWT_SECRET, { expiresIn: "10m" });
+    res.status(200).json({ 
+        message: "Login exitoso", 
+        token: token,
+        user: { id: user.id, nombre: user.nombre } //modifique: nombre del usuario
+      });
   });
 };
 
