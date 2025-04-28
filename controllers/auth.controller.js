@@ -15,11 +15,11 @@ exports.login = (req, res) => {
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) return res.status(401).json({ error: "Contraseña incorrecta" });
 
-    const token = jwt.sign({ id: user.id, name: user.nombre }, process.env.JWT_SECRET, { expiresIn: "10m" });
+    const token = jwt.sign({ id: user.id, name: user.user }, process.env.JWT_SECRET, { expiresIn: "1d" });
     res.status(200).json({ 
         message: "Login exitoso", 
         token: token,
-        user: { id: user.id, nombre: user.nombre } //modifique: nombre del usuario
+        // user: { id: user.id, nombre: user.nombre } //modifique: nombre del usuario
       });
   });
 };
