@@ -14,7 +14,7 @@ const categoriaRoutes = require("./routes/categoria.routes");
 const contratoRoutes = require("./routes/contrato.routes");
 const stockRoutes = require("./routes/stock.routes");
 const telefonoRoutes = require("./routes/telefono.routes");
-
+const logsRoutes = require("./routes/logs.routes"); 
 
 
 const app = express();
@@ -26,7 +26,8 @@ app.get("/", (_req,res) => {
   res.send("Welcome to BackEnd");
 });
 
-//rutas
+
+// rutas
 app.use("/api/v1", authRoutes);
 app.use("/api/v1", usuarioaRoutes);
 app.use("/api/v1", clienteRoutes);
@@ -38,6 +39,7 @@ app.use("/api/v1", categoriaRoutes);
 app.use("/api/v1", contratoRoutes);
 app.use("/api/v1", stockRoutes);
 app.use("/api/v1", telefonoRoutes);
+app.use("/api/v1", logsRoutes); 
 
 
 
