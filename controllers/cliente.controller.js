@@ -59,6 +59,52 @@ exports.deleteCliente = (req, res) => {
   });
 };
 
+
+//Para guardar datos en compra
+exports.createOrUpdateCliente = async (req, res) => {
+  const { id_usuario, nombres, apellidos, telefono, direccion, dni } = req.body;
+
+  try {
+    // Verificar si ya existe cliente para este usuario
+    const [usuario] = await db.query("SELECT id_cliente FROM usuario WHERE id_usuario = ?", [id_usuario]);
+    if (!usuario) return res.status(404).json({ error: "Usuario no encontrado" });
+
+    let clienteId = usuario.id_cliente;
+
+    if (clienteId) {
+      // Actualizar cliente existente
+      await db.query(
+        `UPDATE cliente 
+         SET nombres = ?, apellidos = ?, telefono = ?, direccion = ?, dni = ?
+         WHERE id_cliente = ?`,
+        [nombres, apellidos, telefono, direccion, dni, clienteId]
+      );
+    } else {
+      // Crear nuevo cliente
+      const [result] = await db.query(
+        `INSERT INTO cliente 
+         (nombres, apellidos, telefono, direccion, dni) 
+         VALUES (?, ?, ?, ?, ?)`,
+        [nombres, apellidos, telefono, direccion, dni]
+      );
+      
+      clienteId = result.insertId;
+      // Actualizar usuario con id_cliente
+      await db.query(
+        "UPDATE usuario SET id_cliente = ? WHERE id_usuario = ?",
+        [clienteId, id_usuario]
+      );
+    }
+
+    // Devolver datos actualizados del cliente
+    const [cliente] = await db.query("SELECT * FROM cliente WHERE id_cliente = ?", [clienteId]);
+    res.status(200).json(cliente);
+  } catch (error) {
+    res.status(500).json({ error: "Error interno del servidor" });
+  }
+};
+
+
 // Listar todos los contratos
 exports.listarTodosContratos = (req, res) => {
   const sql = `

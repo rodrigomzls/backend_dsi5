@@ -4,14 +4,19 @@ const ventaController = require("../controllers/ventas.controller");
 const { verifyToken } = require("../middlewares/auth.middleware");
 
 // Rutas para ventas
-router.post("/ventas", verifyToken, ventaController.createVenta);
-router.get("/ventas", verifyToken, ventaController.getVentas);
-router.get("/ventas/:id", verifyToken, ventaController.getVentaById);
-router.put("/ventas/:id", verifyToken, ventaController.updateVenta);
-router.delete("/ventas/:id", verifyToken, ventaController.deleteVenta);
+router.post("/ventas",  ventaController.createVenta);
+router.get("/ventas", ventaController.getVentas);
+router.get("/ventas/:id", ventaController.getVentaById);
+router.put("/ventas/:id", ventaController.updateVenta);
+router.delete("/ventas/:id", ventaController.deleteVenta);
+
 // Rutas para filtrar ventas
-router.get("/ventas/mes", verifyToken, ventaController.obtenerVentasPorMes);
-router.post("/ventas/filtrar/mes", verifyToken, ventaController.filtrarVentasPorMes);
-router.post("/ventas/filtrar/año", verifyToken, ventaController.filtrarVentasPorYear);
-router.post("/ventas/filtrar/año-mes", verifyToken, ventaController.filtrarVentasPorYearYMes);
+router.get("/ventas/mes",  ventaController.obtenerVentasPorMes);
+router.post("/ventas/filtrar/mes",  ventaController.filtrarVentasPorMes);
+router.post("/ventas/filtrar/año",  ventaController.filtrarVentasPorYear);
+router.post("/ventas/filtrar/año-mes",  ventaController.filtrarVentasPorYearYMes);
+
+// Asegúrate de que el controlador está correctamente importado
+router.post("/ventas/completa", ventaController.crearVentaCompleta);
+
 module.exports = router;
