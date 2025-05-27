@@ -4,11 +4,11 @@ const productoController = require("../controllers/producto.controller");
 const { verifyToken } = require("../middlewares/auth.middleware");
 
 // Rutas CRUD básicas
-router.post("/productos", verifyToken, productoController.createProducto);
+router.post("/productos", productoController.createProducto);
 router.get("/productos", productoController.getProductos);
 router.get("/productos/:id", productoController.getProductoById);
-router.put("/productos/:id", verifyToken, productoController.updateProducto);
-router.delete("/productos/:id", verifyToken, productoController.deleteProducto);
+router.put("/productos/:id",  productoController.updateProducto);
+router.delete("/productos/:id",  productoController.deleteProducto);
 
 // Rutas avanzadas SIN barra intermedia
 router.get("/productostock", productoController.getStockPorProducto);  

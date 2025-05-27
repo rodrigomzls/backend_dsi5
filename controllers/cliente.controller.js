@@ -2,7 +2,7 @@ const db = require("../config/database");
 
 // Crear cliente
 exports.createCliente = (req, res) => {
-  const { nombres, apellidos, telefono } = req.body;
+  const { nombres, apellidos, telefono, direccion } = req.body;
   if (!nombres || !apellidos || !telefono || !direccion)
     return res.status(400).json({ error: "Todos los campos son obligatorios" });
 
@@ -39,7 +39,7 @@ exports.getClienteById = (req, res) => {
 // Actualizar cliente
 exports.updateCliente = (req, res) => {
   const { id } = req.params;
-  const { nombres, apellidos, telefono } = req.body;
+  const { nombres, apellidos, telefono, direccion } = req.body;
   db.query(
     "UPDATE cliente SET nombres = ?, apellidos = ?, telefono = ?, direccion = ? WHERE id_cliente = ?",
     [nombres, apellidos, telefono, direccion, id],
@@ -66,7 +66,7 @@ exports.createOrUpdateCliente = async (req, res) => {
 
   try {
     // Verificar si ya existe cliente para este usuario
-    const [usuario] = await db.query("SELECT id_cliente FROM usuario WHERE id_usuario = ?", [id_usuario]);
+    const [[usuario]] = await db.query("SELECT id_cliente FROM usuario WHERE id_usuario = ?", [id_usuario]);
     if (!usuario) return res.status(404).json({ error: "Usuario no encontrado" });
 
     let clienteId = usuario.id_cliente;
@@ -97,7 +97,7 @@ exports.createOrUpdateCliente = async (req, res) => {
     }
 
     // Devolver datos actualizados del cliente
-    const [cliente] = await db.query("SELECT * FROM cliente WHERE id_cliente = ?", [clienteId]);
+    const [[cliente]] = await db.query("SELECT * FROM cliente WHERE id_cliente = ?", [clienteId]);
     res.status(200).json(cliente);
   } catch (error) {
     res.status(500).json({ error: "Error interno del servidor" });

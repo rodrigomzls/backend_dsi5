@@ -1,5 +1,7 @@
 const express = require("express");
 const router = express.Router();
+const multer = require('multer');
+const upload = multer({ dest: 'uploads/' }); // o configuración
 const ventaController = require("../controllers/ventas.controller");
 const { verifyToken } = require("../middlewares/auth.middleware");
 
@@ -17,6 +19,6 @@ router.post("/ventas/filtrar/año",  ventaController.filtrarVentasPorYear);
 router.post("/ventas/filtrar/año-mes",  ventaController.filtrarVentasPorYearYMes);
 
 // Asegúrate de que el controlador está correctamente importado
-router.post("/ventas/completa", ventaController.crearVentaCompleta);
+router.post("/ventas/completa", verifyToken, upload.any(), ventaController.crearVentaCompleta);
 
 module.exports = router;
