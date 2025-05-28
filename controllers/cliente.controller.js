@@ -126,8 +126,8 @@ exports.listarTodosContratos = (req, res) => {
   });
 };
 
-// Filtrar contratos por correo
-exports.filtrarContratosPorCorreo = (req, res) => {
+  // Filtrar contratos por correo
+  exports.filtrarContratosPorCorreo = (req, res) => {
   const { correo } = req.body;
   if (!correo) return res.status(400).json({ error: "El campo correo es obligatorio" });
 
